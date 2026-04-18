@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Happy Birthday, My Love 💖</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet"/>
+
+<style>
+/* ══════════════════════════════════════════
+   TOKENS  ✏️ Edit colours here
+══════════════════════════════════════════ */
+:root {
+  --cream:       #fdf7f7;
+  --blush:       #faeaea;
+  --petal:       #f3d4d4;
+  --rose:        #e5aeae;
+  --rose-mid:    #cc6e6e;
+  --rouge:       #aa3d56;
+  --rouge-deep:  #862d44;
+  --ink:         #2b1919;
+  --ink-soft:    #573535;
+  --muted:       #9a6262;
+  --faint:       #c09090;
+  --white:       #ffffff;
+
+  --glass:       rgba(255,255,255,.68);
+  --glass-heavy: rgba(255,255,255,.86);
+
+  --ff-h: 'Playfair Display', serif;
+  --ff-b: 'Poppins', sans-serif;
+
+  --ease:   cubic-bezier(.4,0,.2,1);
+  --spring: cubic-bezier(.34,1.56,.64,1);
+
+  --sh-card: 0 4px 6px rgba(170,61,86,.04), 0 20px 48px rgba(170,61,86,.09);
+  --sh-glass: 0 8px 32px rgba(170,61,86,.11), inset 0 1px 0 rgba(255,255,255,.8);
+  --sh-lift:  0 24px 64px rgba(170,61,86,.18), inset 0 1px 0 rgba(255,255,255,.9);
+}
+
+/* ══════════════════════════════════════════
+   RESET
+══════════════════════════════════════════ */
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+html { font-size:16px; scroll-behavior:smooth }
+body {
+  font-family: var(--ff-b);
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══════════════════════════════════════════
+   PARTICLE CANVAS
+══════════════════════════════════════════ */
+#cvs {
+  position:fixed; inset:0;
+  pointer-events:none; z-index:0;
+}
+
+/* ══════════════════════════════════════════
+   LANDING
+══════════════════════════════════════════ */
+#landing {
+  position:fixed; inset:0; z-index:90;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center; padding:2rem;
+  background: radial-gradient(ellipse 88% 72% at 50% 38%, #fde4e4 0%, var(--cream) 72%);
+  transition: opacity .85s var(--ease), transform .85s var(--ease);
+}
+#landing.out { opacity:0; transform:scale(1.05); pointer-events:none }
+
+/* Pulse rings */
+.ring {
+  position:absolute; border-radius:50%;
+  border:1px solid rgba(219,152,152,.42);
+  animation: ringpulse 4.2s ease-in-out infinite;
+}
+.ring:nth-child(1){ width:min(560px,88vw); height:min(560px,88vw) }
+.ring:nth-child(2){ width:min(400px,66vw); height:min(400px,66vw); border-color:rgba(219,152,152,.60); animation-delay:.72s }
+.ring:nth-child(3){ width:min(250px,46vw); height:min(250px,46vw); border-color:rgba(219,152,152,.30); animation-delay:1.44s }
+@keyframes ringpulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.05);opacity:.38} }
+
+.land-inner {
+  position:relative; z-index:1;
+  display:flex; flex-direction:column; align-items:center;
+}
+
+/* Staggered reveal */
+.s1{opacity:0;animation:riseup .65s .10s var(--ease) forwards}
+.s2{opacity:0;animation:riseup .65s .26s var(--ease) forwards}
+.s3{opacity:0;animation:riseup .65s .42s var(--ease) forwards}
+.s4{opacity:0;animation:riseup .60s .56s var(--ease) forwards}
+.s5{opacity:0;animation:riseup .60s .70s var(--ease) forwards}
+@keyframes riseup { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+
+.land-eyebrow {
+  font-size:.63rem; font-weight:500; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:1.4rem;
+}
+/* ✏️ Landing title */
+.land-h1 {
+  font-family:var(--ff-h);
+  font-size:clamp(2rem,8vw,3.9rem);
+  font-style:italic; font-weight:500; line-height:1.14;
+  background:linear-gradient(135deg, var(--rouge-deep) 0%, var(--rouge) 45%, var(--rose-mid) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  filter:drop-shadow(0 2px 18px rgba(170,61,86,.22));
+  margin-bottom:.8rem;
+}
+/* ✏️ Landing subtitle */
+.land-sub {
+  font-size:.9rem; font-weight:300; color:var(--muted);
+  line-height:1.75; margin-bottom:2.2rem;
+}
+.land-petals {
+  display:flex; gap:.55rem; margin-bottom:2.2rem;
+}
+.land-petals span { font-size:1.05rem; animation:wobble 3s ease-in-out infinite }
+.land-petals span:nth-child(2){animation-delay:.35s}
+.land-petals span:nth-child(3){animation-delay:.7s}
+@keyframes wobble { 0%,100%{transform:rotate(-8deg)scale(1)} 50%{transform:rotate(8deg)scale(1.18)} }
+
+/* CTA */
+.btn-enter {
+  font-family:var(--ff-b); font-size:.9rem; font-weight:500;
+  letter-spacing:.06em; color:#fff;
+  background:linear-gradient(135deg, var(--rouge), var(--rose-mid));
+  border:none; border-radius:999px;
+  padding:.9rem 2.6rem; cursor:pointer;
+  box-shadow:0 8px 28px rgba(170,61,86,.32), inset 0 1px 0 rgba(255,255,255,.22);
+  transition:transform .3s var(--spring), box-shadow .3s;
+}
+.btn-enter:hover{transform:translateY(-3px)scale(1.03);box-shadow:0 16px 42px rgba(170,61,86,.40),inset 0 1px 0 rgba(255,255,255,.22)}
+.btn-enter:active{transform:scale(.97)}
+
+/* ══════════════════════════════════════════
+   MUSIC BUTTON — fixed bottom-right
+══════════════════════════════════════════ */
+#music-wrap {
+  position:fixed; bottom:1.6rem; right:1.6rem; z-index:200;
+  display:none; flex-direction:column; align-items:flex-end; gap:.5rem;
+}
+#music-wrap.on { display:flex }
+#music-btn {
+  width:52px; height:52px; border-radius:50%;
+  background:linear-gradient(135deg, var(--rouge), var(--rose-mid));
+  border:none; color:#fff; font-size:1.25rem;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+  box-shadow:0 6px 24px rgba(170,61,86,.36);
+  transition:transform .25s var(--spring), box-shadow .25s;
+}
+#music-btn:hover{transform:scale(1.12);box-shadow:0 10px 32px rgba(170,61,86,.46)}
+#music-btn.playing{animation:mpulse 2s ease-in-out infinite}
+@keyframes mpulse{0%,100%{box-shadow:0 6px 24px rgba(170,61,86,.36)}50%{box-shadow:0 6px 32px rgba(170,61,86,.65),0 0 0 9px rgba(170,61,86,.10)}}
+#music-label{
+  font-size:.63rem; font-weight:500; letter-spacing:.05em;
+  color:var(--rouge);
+  background:rgba(255,255,255,.88); backdrop-filter:blur(8px);
+  border:1px solid var(--petal); border-radius:999px;
+  padding:.22rem .75rem;
+  box-shadow:0 2px 10px rgba(170,61,86,.10);
+  white-space:nowrap;
+}
+
+/* ══════════════════════════════════════════
+   MAIN CONTENT
+══════════════════════════════════════════ */
+#main {
+  position:relative; z-index:1;
+  opacity:0; transform:translateY(20px); pointer-events:none;
+  transition:opacity .9s .15s var(--ease), transform .9s .15s var(--ease);
+}
+#main.show { opacity:1; transform:none; pointer-events:all }
+
+/* Section wrapper */
+.sec { max-width:740px; margin:0 auto; padding:5rem 1.5rem }
+
+/* Scroll reveal */
+.appear { opacity:0; transform:translateY(24px); transition:opacity .75s var(--ease), transform .75s var(--ease) }
+.appear.in { opacity:1; transform:none }
+
+/* Ornament divider */
+.orn { display:flex; align-items:center; gap:1rem; max-width:740px; margin:0 auto; padding:0 1.5rem }
+.orn-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--rose),transparent) }
+.orn-icon { color:var(--rose); font-size:.85rem; flex-shrink:0 }
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+.hero { text-align:center; padding-bottom:2rem }
+.hero-eyebrow {
+  font-size:.63rem; font-weight:500; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:1.1rem;
+}
+.hero-h1 {
+  font-family:var(--ff-h); font-style:italic;
+  font-size:clamp(2.6rem,8vw,4.8rem); font-weight:400; line-height:1.12;
+  background:linear-gradient(135deg, var(--rouge-deep) 0%, var(--rouge) 50%, var(--rose-mid) 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  margin-bottom:.9rem;
+  filter:drop-shadow(0 2px 12px rgba(170,61,86,.18));
+}
+.hero-p { font-size:.9rem; font-weight:300; color:var(--muted); line-height:1.85; max-width:380px; margin:0 auto }
+
+/* ══════════════════════════════════════════
+   MESSAGE CARD — glassmorphism
+══════════════════════════════════════════ */
+.msg-card {
+  background:var(--glass);
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  border-radius:28px;
+  border:1px solid rgba(238,188,188,.48);
+  padding:3rem 3rem 2.6rem;
+  box-shadow:var(--sh-glass);
+  position:relative; overflow:hidden;
+  transition:box-shadow .3s;
+}
+.msg-card:hover { box-shadow:var(--sh-lift) }
+.msg-card::before {
+  content:'"'; position:absolute; top:-.6rem; left:1.6rem;
+  font-family:var(--ff-h); font-size:9rem;
+  color:rgba(238,185,185,.26); line-height:1; pointer-events:none;
+}
+.msg-card::after {
+  content:''; position:absolute; bottom:0; left:0; right:0; height:70px;
+  background:linear-gradient(transparent,rgba(253,247,247,.52));
+  pointer-events:none;
+}
+/* ✏️ Edit message paragraphs in HTML */
+.msg-body {
+  position:relative; z-index:1;
+  font-family:var(--ff-h); font-style:italic;
+  font-size:1.22rem; font-weight:400; line-height:2.1; color:var(--ink-soft);
+}
+.msg-body p+p { margin-top:.75rem }
+.msg-hl { color:var(--rouge) }
+.msg-sig {
+  position:relative; z-index:1;
+  margin-top:2rem; text-align:right;
+  font-size:.75rem; font-weight:300; color:var(--muted); letter-spacing:.05em;
+}
+.msg-sig::before {
+  content:''; display:inline-block; width:26px; height:1px;
+  background:var(--rose); vertical-align:middle; margin-right:.55rem;
+}
+
+/* ══════════════════════════════════════════
+   GALLERY SECTION — gallery-first design
+══════════════════════════════════════════ */
+.gallery-section { max-width:740px; margin:0 auto; padding:5rem 1.5rem }
+
+/* Minimal upload trigger — subtle, not a big box */
+.gallery-toolbar {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:1.4rem; flex-wrap:wrap; gap:.75rem;
+}
+.gallery-title {
+  font-family:var(--ff-h); font-style:italic;
+  font-size:1.55rem; font-weight:400; color:var(--ink);
+}
+.gallery-actions { display:flex; align-items:center; gap:.6rem }
+
+/* Minimal upload button — looks like a pill tag, not a form */
+.btn-upload {
+  display:inline-flex; align-items:center; gap:.4rem;
+  font-family:var(--ff-b); font-size:.72rem; font-weight:500; letter-spacing:.05em;
+  color:var(--rouge);
+  background:rgba(255,255,255,.75); backdrop-filter:blur(8px);
+  border:1px solid var(--rose); border-radius:999px;
+  padding:.38rem 1rem; cursor:pointer;
+  transition:all .22s var(--spring);
+  white-space:nowrap;
+}
+.btn-upload:hover { background:var(--rouge); color:#fff; border-color:var(--rouge); transform:translateY(-1px) }
+.btn-upload input { display:none }
+
+/* Clear button — same minimal style */
+.btn-clr {
+  display:none;
+  font-family:var(--ff-b); font-size:.7rem; font-weight:400; letter-spacing:.04em;
+  color:var(--faint);
+  background:none; border:1px solid var(--petal); border-radius:999px;
+  padding:.35rem .9rem; cursor:pointer; transition:all .2s;
+}
+.btn-clr:hover { color:var(--rouge); border-color:var(--rose); background:var(--blush) }
+.btn-clr.show { display:inline-flex; align-items:center; gap:.3rem }
+
+/* Empty state — shown when no photos */
+.gallery-empty {
+  display:flex; flex-direction:column; align-items:center;
+  padding:3.5rem 1rem; text-align:center; gap:.6rem;
+}
+.gallery-empty .empty-ico { font-size:2.4rem; opacity:.5 }
+.gallery-empty p { font-size:.82rem; font-weight:300; color:var(--faint); line-height:1.6 }
+
+/* THE GRID — gallery is the hero */
+#gallery { display:none }
+#gallery.active {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:.7rem;
+}
+
+/* Individual photo item */
+.ph {
+  border-radius:16px; overflow:hidden;
+  aspect-ratio:1; background:var(--petal);
+  cursor:pointer; position:relative;
+  box-shadow:0 4px 16px rgba(170,61,86,.09);
+  transition:transform .3s var(--spring), box-shadow .3s, outline .2s;
+  outline:2.5px solid transparent; outline-offset:3px;
+}
+/* Featured = full-width 4:3 */
+.ph.feat {
+  grid-column:1 / -1;
+  aspect-ratio:16 / 9;
+  outline-color:var(--rouge);
+}
+.ph:hover { transform:scale(1.03); box-shadow:0 10px 32px rgba(170,61,86,.18) }
+.ph img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s var(--ease) }
+.ph:hover img { transform:scale(1.06) }
+
+/* Featured badge */
+.ph.feat::after {
+  content:'✦ Featured';
+  position:absolute; bottom:.7rem; left:.7rem;
+  font-size:.6rem; font-weight:500; letter-spacing:.07em; text-transform:uppercase;
+  background:rgba(255,255,255,.88); color:var(--rouge);
+  padding:.18rem .58rem; border-radius:999px; backdrop-filter:blur(4px);
+}
+
+/* Photo count note */
+.gallery-note {
+  margin-top:1rem; text-align:center;
+  font-size:.7rem; font-weight:300; color:var(--faint); letter-spacing:.03em;
+}
+.gallery-note span { color:var(--rouge) }
+
+/* ══════════════════════════════════════════
+   SURPRISE SECTION
+══════════════════════════════════════════ */
+.surp { text-align:center }
+.surp > p { font-size:.88rem; font-weight:300; color:var(--muted); line-height:1.75; margin-bottom:2rem }
+.btn-surp {
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-family:var(--ff-b); font-size:.88rem; font-weight:500; letter-spacing:.05em;
+  color:var(--rouge);
+  background:var(--glass-heavy); backdrop-filter:blur(12px);
+  border:1.5px solid var(--rose); border-radius:999px;
+  padding:.85rem 2.4rem; cursor:pointer;
+  box-shadow:0 4px 20px rgba(170,61,86,.12);
+  transition:all .3s var(--spring);
+}
+.btn-surp:hover {
+  background:linear-gradient(135deg,var(--rouge),var(--rose-mid));
+  color:#fff; border-color:transparent;
+  transform:translateY(-3px); box-shadow:0 14px 36px rgba(170,61,86,.30);
+}
+
+/* ══════════════════════════════════════════
+   POPUP
+══════════════════════════════════════════ */
+.overlay {
+  position:fixed; inset:0; z-index:400;
+  background:rgba(43,25,25,.38); backdrop-filter:blur(10px);
+  display:flex; align-items:center; justify-content:center; padding:1.5rem;
+  opacity:0; pointer-events:none; transition:opacity .35s var(--ease);
+}
+.overlay.open { opacity:1; pointer-events:all }
+.popup-card {
+  background:var(--glass-heavy); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+  border-radius:28px; border:1px solid rgba(232,176,176,.50);
+  padding:3rem 2.5rem 2.5rem; max-width:380px; width:100%;
+  text-align:center;
+  box-shadow:0 32px 80px rgba(170,61,86,.22), inset 0 1px 0 rgba(255,255,255,.9);
+  transform:scale(.88) translateY(18px); transition:transform .5s var(--spring);
+  position:relative; overflow:hidden;
+}
+.overlay.open .popup-card { transform:none }
+.popup-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:4px;
+  background:linear-gradient(90deg,var(--rouge),var(--rose),var(--rouge));
+}
+.popup-ico { font-size:2.8rem; display:block; margin-bottom:1rem; animation:heartbeat 1.5s ease-in-out infinite }
+@keyframes heartbeat { 0%,100%{transform:scale(1)} 14%{transform:scale(1.2)} 28%{transform:scale(1)} 42%{transform:scale(1.10)} }
+/* ✏️ Popup heading */
+.popup-h2 { font-family:var(--ff-h); font-style:italic; font-size:1.55rem; font-weight:400; color:var(--ink); margin-bottom:.7rem }
+/* ✏️ Popup message in HTML */
+.popup-msg { font-size:.88rem; font-weight:300; color:var(--ink-soft); line-height:2; margin-bottom:1.8rem }
+.btn-close {
+  font-family:var(--ff-b); font-size:.75rem; font-weight:500; letter-spacing:.06em;
+  color:var(--muted); background:none; border:1px solid var(--petal);
+  border-radius:999px; padding:.5rem 1.8rem; cursor:pointer; transition:all .22s;
+}
+.btn-close:hover { background:var(--blush); border-color:var(--rose); color:var(--rouge) }
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer {
+  text-align:center; padding:2.5rem 1rem 3rem;
+  border-top:1px solid rgba(229,174,174,.25);
+  font-size:.78rem; font-weight:300; color:var(--muted);
+  letter-spacing:.04em; line-height:2.2;
+}
+footer .heart { color:var(--rouge) }
+footer .name  { font-family:var(--ff-h); font-style:italic; color:var(--rouge) }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:540px){
+  .msg-card { padding:2rem 1.5rem 1.8rem }
+  .msg-body { font-size:1.06rem }
+  #gallery.active { grid-template-columns:repeat(2,1fr) }
+  .msg-card::before { font-size:7rem }
+  .sec, .gallery-section { padding:4rem 1.2rem }
+}
+@media(max-width:360px){ .land-h1, .hero-h1 { font-size:1.85rem } }
+</style>
+</head>
+<body>
+
+<!-- ✏️ Change src to your music file (keep in same folder) -->
+<audio id="aud" loop><source src="love.mp3" type="audio/mpeg"/></audio>
+
+<!-- Particle canvas -->
+<canvas id="cvs"></canvas>
+
+<!-- ══════════════════════════════════════════
+     LANDING
+══════════════════════════════════════════ -->
+<section id="landing">
+  <div class="ring"></div>
+  <div class="ring"></div>
+  <div class="ring"></div>
+
+  <div class="land-inner">
+    <p class="land-eyebrow s1">a little something for you</p>
+
+    <!-- ✏️ Landing title -->
+    <h1 class="land-h1 s2">Happy Birthday,<br/>My Love 💖</h1>
+
+    <!-- ✏️ Thai subtitle -->
+    <p class="land-sub s3">มีอะไรเล็ก ๆ น้อย ๆ ให้เธอนะ :)</p>
+
+    <div class="land-petals s4">
+      <span>🌸</span><span>💖</span><span>🌸</span>
+    </div>
+
+    <button class="btn-enter s5" id="btn-enter">Click Me 🎁</button>
+  </div>
+</section>
+
+<!-- Music toggle -->
+<div id="music-wrap">
+  <span id="music-label">Play music</span>
+  <button id="music-btn" aria-label="Toggle music">🎵</button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════ -->
+<div id="main">
+
+  <!-- HERO -->
+  <section class="sec hero appear">
+    <p class="hero-eyebrow">✦ for you, always ✦</p>
+    <!-- ✏️ Hero title -->
+    <h1 class="hero-h1">Happy Birthday,<br/><em>My Love</em></h1>
+    <p class="hero-p">I made this little page just for you.<br/>Hope it makes your day a little brighter ☁️</p>
+  </section>
+
+  <div class="orn"><div class="orn-line"></div><span class="orn-icon">♡</span><div class="orn-line"></div></div>
+
+  <!-- MESSAGE -->
+  <section class="sec appear">
+    <div class="msg-card">
+      <!-- ✏️ Edit message paragraphs -->
+      <div class="msg-body">
+        <p>สุขสันต์วันเกิดนะ <span class="msg-hl">:)</span></p>
+        <p>ดีใจมาก ๆ ที่มีเธออยู่ตรงนี้</p>
+        <p>ขอให้วันนี้เป็นวันที่ดีสำหรับเธอนะ</p>
+        <p>อยู่ด้วยกันนานๆ เนอะ 💕</p>
+      </div>
+      <!-- ✏️ Signature -->
+      <p class="msg-sig">written with love, just for you</p>
+    </div>
+  </section>
+
+  <div class="orn"><div class="orn-line"></div><span class="orn-icon">♡</span><div class="orn-line"></div></div>
+
+  <!-- ══════════════════════════════════════════
+       GALLERY — gallery-first, no big upload box
+  ══════════════════════════════════════════ -->
+  <div class="gallery-section appear">
+
+    <!-- Minimal toolbar: title left, tiny buttons right -->
+    <div class="gallery-toolbar">
+      <!-- ✏️ Gallery title -->
+      <h2 class="gallery-title">Our Moments ✨</h2>
+
+      <div class="gallery-actions">
+        <!-- Tiny clear button (only visible when photos exist) -->
+        <button class="btn-clr" id="btn-clr" title="Clear all photos">
+          <span>✕</span> clear
+        </button>
+
+        <!-- The upload trigger — looks like a pill badge, not a form -->
+        <label class="btn-upload" title="Add photos">
+          <span>＋</span> add photos
+          <input type="file" id="upload" accept="image/*" multiple aria-label="Upload photos"/>
+        </label>
+      </div>
+    </div>
+
+    <!-- Empty state (shown until photos are added) -->
+    <div class="gallery-empty" id="gallery-empty">
+      <div class="empty-ico">📷</div>
+      <!-- ✏️ Empty state hint -->
+      <p>Tap <strong style="color:var(--rouge)">+ add photos</strong> above<br/>to fill this space with memories 🌸</p>
+    </div>
+
+    <!-- GRID — populated by JS -->
+    <div id="gallery" role="list"></div>
+
+    <!-- Subtle photo count -->
+    <p class="gallery-note" id="gallery-note" style="display:none">
+      <span id="photo-count">0</span> photos saved in your browser 💾
+    </p>
+  </div>
+
+  <div class="orn"><div class="orn-line"></div><span class="orn-icon">♡</span><div class="orn-line"></div></div>
+
+  <!-- SURPRISE -->
+  <section class="sec appear">
+    <div class="surp">
+      <h2 style="font-family:var(--ff-h);font-style:italic;font-size:1.8rem;font-weight:400;color:var(--ink);margin-bottom:.65rem">
+        There's one more thing 🎀
+      </h2>
+      <!-- ✏️ Surprise sub-text -->
+      <p>เปิดมาดูนะ — มีนิดนึงที่อยากบอกเธอ<br/>just a small note from my heart to yours.</p>
+      <button class="btn-surp" id="btn-surp">Open 💌</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>🌸 &nbsp;💖&nbsp; 🌸</div>
+    <!-- ✏️ Footer text -->
+    Made with <span class="heart">♥</span> for <span class="name">My Love</span> 💕
+  </footer>
+
+</div><!-- /main -->
+
+<!-- ══════════════════════════════════════════
+     POPUP MODAL
+══════════════════════════════════════════ -->
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="popup-title">
+  <div class="popup-card">
+    <span class="popup-ico" role="img" aria-label="Heart">💖</span>
+    <!-- ✏️ Popup heading -->
+    <h2 class="popup-h2" id="popup-title">ถึงเธอ</h2>
+    <!-- ✏️ Popup message -->
+    <p class="popup-msg">
+      ขอบคุณที่อยู่ด้วยกันนะ 💖<br/>
+      ขอบคุณทุกช่วงเวลาดี ๆ ที่มีกัน<br/>
+      ทุกวันที่มีเธอ มันดีเสมอเลย ✨<br/><br/>
+      <span style="color:var(--rouge);font-style:italic">Happy birthday อีกครั้ง :)</span>
+    </p>
+    <button class="btn-close" id="btn-close">close 🌸</button>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════
+   PARTICLE CANVAS — floating hearts
+════════════════════════════════════════ */
+(function () {
+  const cv = document.getElementById('cvs');
+  const ctx = cv.getContext('2d');
+  let W, H, pts = [];
+
+  function resize () { W = cv.width = innerWidth; H = cv.height = innerHeight }
+  resize();
+  addEventListener('resize', resize);
+
+  function drawHeart (cx, cy, r) {
+    ctx.beginPath();
+    ctx.moveTo(cx, cy + r * .30);
+    ctx.bezierCurveTo(cx, cy - r * .30, cx - r * .95, cy - r * .30, cx - r * .95, cy + r * .15);
+    ctx.bezierCurveTo(cx - r * .95, cy + r * .65, cx, cy + r * 1.05, cx, cy + r * 1.25);
+    ctx.bezierCurveTo(cx, cy + r * 1.05, cx + r * .95, cy + r * .65, cx + r * .95, cy + r * .15);
+    ctx.bezierCurveTo(cx + r * .95, cy - r * .30, cx, cy - r * .30, cx, cy + r * .30);
+    ctx.closePath();
+  }
+
+  const PAL = [[230,174,174],[210,125,138],[247,218,218],[170,61,86]];
+
+  function spawn () {
+    const [r,g,b] = PAL[Math.floor(Math.random() * PAL.length)];
+    return { x:Math.random()*W, y:H+24, sz:3.5+Math.random()*9,
+      vx:(Math.random()-.5)*.42, vy:-(0.32+Math.random()*.65),
+      a:.10+Math.random()*.26, r, g, b, wb:0, wbs:.018+Math.random()*.028 };
+  }
+
+  for (let i = 0; i < 24; i++) { const p = spawn(); p.y = Math.random()*H; pts.push(p); }
+
+  (function tick () {
+    ctx.clearRect(0, 0, W, H);
+    if (pts.length < 34 && Math.random() < .022) pts.push(spawn());
+    for (let i = pts.length - 1; i >= 0; i--) {
+      const p = pts[i];
+      p.wb += p.wbs; p.x += p.vx + Math.sin(p.wb)*.26; p.y += p.vy;
+      drawHeart(p.x, p.y, p.sz);
+      ctx.fillStyle = `rgba(${p.r},${p.g},${p.b},${p.a})`;
+      ctx.fill();
+      if (p.y < -35) pts.splice(i, 1);
+    }
+    requestAnimationFrame(tick);
+  })();
+})();
+
+/* ════════════════════════════════════════
+   LANDING → MAIN
+════════════════════════════════════════ */
+document.getElementById('btn-enter').addEventListener('click', function () {
+  document.getElementById('landing').classList.add('out');
+  setTimeout(function () {
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('main').classList.add('show');
+    document.getElementById('music-wrap').classList.add('on');
+    initReveal();
+    loadImages();   /* restore saved photos */
+  }, 870);
+});
+
+/* ════════════════════════════════════════
+   SCROLL REVEAL
+════════════════════════════════════════ */
+function initReveal () {
+  const io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: .10 });
+  document.querySelectorAll('.appear').forEach(function (el) { io.observe(el); });
+}
+
+/* ════════════════════════════════════════
+   MUSIC
+════════════════════════════════════════ */
+const aud = document.getElementById('aud');
+const mBtn = document.getElementById('music-btn');
+const mLbl = document.getElementById('music-label');
+let mOn = false;
+
+mBtn.addEventListener('click', function () {
+  if (mOn) {
+    aud.pause();
+    mBtn.textContent = '🎵'; mLbl.textContent = 'Play music';
+    mBtn.classList.remove('playing'); mOn = false;
+  } else {
+    aud.play().then(function () {
+      mBtn.textContent = '⏸'; mLbl.textContent = 'Playing 🎶';
+      mBtn.classList.add('playing'); mOn = true;
+    }).catch(function () { mLbl.textContent = 'Tap again ♡'; });
+  }
+});
+
+/* ════════════════════════════════════════
+   GALLERY + LOCALSTORAGE PERSISTENCE
+════════════════════════════════════════ */
+const STORE_KEY = 'bday_gallery_v1';  /* ✏️ Change to reset storage */
+
+const gallery      = document.getElementById('gallery');
+const emptyState   = document.getElementById('gallery-empty');
+const galleryNote  = document.getElementById('gallery-note');
+const photoCount   = document.getElementById('photo-count');
+const btnClr       = document.getElementById('btn-clr');
+const uploadInput  = document.getElementById('upload');
+
+let images = [];   /* Base64 strings */
+let featIdx = 0;   /* Index of featured photo */
+
+/* ── Render gallery from images[] ── */
+function renderGallery (animate) {
+  gallery.innerHTML = '';
+
+  if (!images.length) {
+    gallery.className         = '';
+    emptyState.style.display  = 'flex';
+    galleryNote.style.display = 'none';
+    btnClr.classList.remove('show');
+    return;
+  }
+
+  /* Hide empty state, show grid */
+  emptyState.style.display = 'none';
+  gallery.className        = 'active';
+
+  images.forEach(function (src, idx) {
+    const wrap = document.createElement('div');
+    wrap.className = 'ph' + (idx === featIdx ? ' feat' : '');
+    wrap.setAttribute('role', 'listitem');
+    wrap.dataset.idx = idx;
+
+    const img = document.createElement('img');
+    img.src = src; img.alt = 'Photo ' + (idx + 1); img.loading = 'lazy';
+    wrap.appendChild(img);
+
+    /* Staggered spring entrance on fresh upload */
+    if (animate) {
+      wrap.style.cssText = `opacity:0;transform:scale(.88);
+        transition:opacity .5s ${idx*.09}s ease,
+                   transform .55s ${idx*.09}s cubic-bezier(.34,1.56,.64,1)`;
+      gallery.appendChild(wrap);
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { wrap.style.opacity = '1'; wrap.style.transform = 'none'; });
+      });
+    } else {
+      gallery.appendChild(wrap);
+    }
+
+    /* Click to feature */
+    wrap.addEventListener('click', function () {
+      featIdx = idx;
+      renderGallery(false);
+      saveImages();
+    });
+  });
+
+  /* Update UI chrome */
+  photoCount.textContent    = images.length;
+  galleryNote.style.display = 'block';
+  btnClr.classList.add('show');
+}
+
+/* ── Save to localStorage ── */
+function saveImages () {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify({ images: images, feat: featIdx }));
+  } catch (e) {
+    console.warn('Storage full — try fewer/smaller images');
+  }
+}
+
+/* ── Load from localStorage on page enter ── */
+function loadImages () {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    images  = Array.isArray(data.images) ? data.images : [];
+    featIdx = typeof data.feat === 'number' ? data.feat : 0;
+    renderGallery(false);
+  } catch (e) {
+    console.warn('Could not load saved images', e);
+  }
+}
+
+/* ── Handle file upload ── */
+uploadInput.addEventListener('change', function () {
+  const files = Array.from(this.files);
+  if (!files.length) return;
+
+  /* Replace entire gallery with new selection */
+  images = []; featIdx = 0;
+  let done = 0;
+  const tmp = new Array(files.length);
+
+  files.forEach(function (file, idx) {
+    if (!file.type.startsWith('image/')) { done++; return; }
+    const reader = new FileReader();
+    reader.onload  = function (ev) { tmp[idx] = ev.target.result; done++; finish(); };
+    reader.onerror = function ()   { done++; finish(); };
+    reader.readAsDataURL(file);
+  });
+
+  function finish () {
+    if (done < files.length) return;
+    images = tmp.filter(Boolean);
+    saveImages();
+    renderGallery(true);
+  }
+
+  this.value = '';  /* allow re-selecting same files */
+});
+
+/* ── Clear all photos ── */
+btnClr.addEventListener('click', function () {
+  if (!confirm('Clear all saved photos?')) return;
+  images = []; featIdx = 0;
+  try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+  renderGallery(false);
+});
+
+/* ════════════════════════════════════════
+   POPUP
+════════════════════════════════════════ */
+const overlay = document.getElementById('overlay');
+
+document.getElementById('btn-surp').addEventListener('click', function () {
+  overlay.classList.add('open'); document.body.style.overflow = 'hidden';
+});
+function closePopup () { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+document.getElementById('btn-close').addEventListener('click', closePopup);
+overlay.addEventListener('click', function (e) { if (e.target === overlay) closePopup(); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePopup(); });
+</script>
+</body>
+</html>
